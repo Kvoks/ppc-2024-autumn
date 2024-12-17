@@ -149,6 +149,6 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Task_Run) {
     taskSequential->post_processing();
 
     ASSERT_EQ(output_vector.size(), seq_result.size());
-    ASSERT_EQ(output_vector[i], seq_result[i]);
+    ASSERT_EQ(output_vector, seq_result);
   }
 }

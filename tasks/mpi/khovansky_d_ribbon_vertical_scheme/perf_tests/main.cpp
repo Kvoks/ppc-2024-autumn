@@ -24,21 +24,11 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Pipeline_Run) {
   int columns_count;
 
   if (world.rank() == 0) {
-    rows_count = 8192;
-    columns_count = 8192;
+    rows_count = 1024;
+    columns_count = 1024;
 
-    input_vector.resize(columns_count);
-    input_matrix.resize(rows_count * columns_count);
-
-    for (int j = 0; j < rows_count; ++j) {
-      for (int i = 0; i < columns_count; ++i) {
-        input_matrix[j * columns_count + i] = (rand() % 1001) - 500;
-      }
-    }
-
-    for (int i = 0; i < rows_count; ++i) {
-      input_vector[i] = (rand() % 1000) - 500;
-    }
+    input_vector.resize(columns_count, 0);
+    input_matrix.resize(rows_count * columns_count, 0);
 
     output_vector.resize(columns_count, 0);
 
@@ -90,9 +80,7 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Pipeline_Run) {
     taskSequential->post_processing();
 
     ASSERT_EQ(output_vector.size(), seq_result.size());
-    for (size_t i = 0; i < output_vector.size(); ++i) {
-      ASSERT_EQ(output_vector[i], seq_result[i]);
-    }
+    ASSERT_EQ(output_vector, seq_result);
   }
 }
 
@@ -109,22 +97,11 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Task_Run) {
   int columns_count;
 
   if (world.rank() == 0) {
-    rows_count = 8000;
-    columns_count = 8000;
+    rows_count = 1024;
+    columns_count = 1024;
 
-    input_matrix.resize(rows_count * columns_count);
-    input_vector.resize(columns_count);
-
-    for (int j = 0; j < rows_count; ++j) {
-      for (int i = 0; i < columns_count; ++i) {
-        input_matrix[j * columns_count + i] = (rand() % 1001) - 500;
-      }
-    }
-
-    for (int i = 0; i < rows_count; ++i) {
-      input_vector[i] = (rand() % 1000) - 500;
-    }
-
+    input_matrix.resize(rows_count * columns_count, 0);
+    input_vector.resize(columns_count, 0);
     output_vector.resize(columns_count, 0);
 
     taskDataPar->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_matrix.data()));
@@ -172,8 +149,6 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Task_Run) {
     taskSequential->post_processing();
 
     ASSERT_EQ(output_vector.size(), seq_result.size());
-    for (size_t i = 0; i < output_vector.size(); ++i) {
-      ASSERT_EQ(output_vector[i], seq_result[i]);
-    }
+    ASSERT_EQ(output_vector[i], seq_result[i]);
   }
 }

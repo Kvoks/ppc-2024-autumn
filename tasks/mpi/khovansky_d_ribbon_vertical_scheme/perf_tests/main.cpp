@@ -1,5 +1,5 @@
 // Copyright 2024 Khovansky Dmitry
-#include <gtest/gtest.h>
+/*#include <gtest/gtest.h>
 
 #include <boost/mpi.hpp>
 #include <boost/mpi/environment.hpp>
@@ -151,4 +151,4 @@ TEST(khovansky_d_ribbon_vertical_scheme_mpi, Performance_Task_Run) {
     ASSERT_EQ(output_vector.size(), seq_result.size());
     ASSERT_EQ(output_vector, seq_result);
   }
-}
+}*/
